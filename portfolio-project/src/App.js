@@ -1,41 +1,32 @@
-import DoggieCard from "./DoggieCard"
-
-const dogsList = [
-  {
-    id: 0,
-    name: "Marshie",
-    breed: "Maltese",
-    weight: "9 lbs",
-    category: "Small Dog"
-  },
-  {
-    id: 1,
-    name: "Caramel",
-    breed: "Golden Retriever",
-    weight: "61 lbs",
-    category: "Big Dog"
-  },
-  {
-    id: 2,
-    name: "Swizzy",
-    breed: "Husky",
-    weight: "43 lbs",
-    category: "Big Dog"
-  },
-  {
-    id: 3,
-    name: "Pooshie",
-    breed: "Poodle",
-    weight: "18 lbs",
-    category: "Medium Dog"
-  },
-]
+import {useState} from 'react';
+import HomePage from './components/HomePage'
+import RandomPage from './components/RandomPage'
+import AboutMePage from './components/AboutMePage';
+import { TEST_DOGS } from "./TEST_DOGS"
+import { Link, Route, Routes } from 'react-router-dom';
+import { Container, Nav, Navbar } from "react-bootstrap";
 
 function App() {
+  const [dogsList, setDogsList] = useState( TEST_DOGS )
+
   return (
     <div>
-      <h1>Oh My Dog</h1>
-      { dogsList.map( dg => <DoggieCard dog={dg} /> ) }
+      <Navbar bg="dark" data-bs-theme="dark">
+        <Container>
+          <Navbar.Brand as={Link} to="/">Oh My Dog</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/random">Random</Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+      <Container className="mt-4">
+        <Routes>
+          <Route path="/" element={ <HomePage dogsList = {dogsList}/> }/>
+          <Route path="/random" element={ <RandomPage dogsList = {dogsList}/> }/>
+          <Route path="/dogs/:dogId" element={ <AboutMePage dogsList={dogsList} /> } />
+        </Routes>
+        </Container>
     </div>
   );
 }
